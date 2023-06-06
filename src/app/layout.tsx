@@ -1,5 +1,10 @@
+import Image from 'next/image'
 import './globals.css'
 import { Inter } from 'next/font/google'
+
+import bubblesTop from './images/background-bubbles-top-left.svg'
+import bubblesMiddle from './images/background-bubbles-middle-right.svg'
+import bubblesBottom from './images/background-bubbles-bottom-left.svg'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,7 +20,45 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Image
+          src={bubblesTop.src}
+          alt="description"
+          height={1000}
+          width={1000}
+          style={{
+            height: 155,
+            width: 'auto',
+          }}
+        />
+        <Image
+          src={bubblesMiddle.src}
+          alt="description"
+          height={1000}
+          width={1000}
+          style={{
+            position: 'absolute',
+            right: 0,
+            top: 265,
+            height: 220,
+            width: 'auto',
+          }}
+        />
+        <Image
+          src={bubblesBottom.src}
+          alt="description"
+          height={1000}
+          width={1000}
+          style={{
+            position: 'absolute',
+            left: 20,
+            top: 550,
+            height: 90,
+            width: 'auto',
+          }}
+        />
+        {children}
+      </body>
     </html>
   )
 }
