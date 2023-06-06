@@ -27,6 +27,9 @@ export default function RootLayout({
           height={1000}
           width={1000}
           style={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
             height: 155,
             width: 'auto',
           }}
@@ -52,7 +55,7 @@ export default function RootLayout({
           style={{
             position: 'absolute',
             left: 20,
-            top: 550,
+            top: 500,
             height: 90,
             width: 'auto',
           }}
