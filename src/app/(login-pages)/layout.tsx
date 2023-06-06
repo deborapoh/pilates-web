@@ -1,7 +1,8 @@
 import Image from 'next/image'
-import '../../globals.css'
+import '../globals.css'
 
-import backgroundMeditating from '../../images/background-meditating.svg'
+import backgroundMeditating from '../images/background-meditating.svg'
+import { itemsZIndex } from '@/app/constants'
 
 export default function LoginLayout({
   children,
@@ -17,6 +18,7 @@ export default function LoginLayout({
         width={1000}
         style={{
           position: 'absolute',
+          zIndex: itemsZIndex.background,
           bottom: 0,
           right: 0,
           left: 0,
