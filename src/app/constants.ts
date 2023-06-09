@@ -2,6 +2,8 @@ import student from './images/icons/student.svg'
 import employee from './images/icons/employee.svg'
 import finance from './images/icons/finance.svg'
 import calendar from './images/icons/calendar.svg'
+import studentEvolution from './images/list.svg'
+import studentRegistration from './images/edit.svg'
 
 export const itemsZIndex = {
   background: -1,
@@ -25,12 +27,12 @@ export const modules: Module[] = [
       {
         name: 'Cadastrar',
         path: '/students/registration',
-        icon: student,
+        icon: studentRegistration,
       },
       {
         name: 'Ficha de Evolução',
         path: '/students/evolution',
-        icon: student,
+        icon: studentEvolution,
       },
     ],
   },
