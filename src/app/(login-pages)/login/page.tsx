@@ -121,7 +121,7 @@ export default function Login() {
         />
         <InputWarning message={errors.email?.type === 'required' ? 'Digite seu email' : ''} />
         <Input
-        InputProps={{ disableUnderline: true }}
+          // InputProps={{ disableUnderline: true }}
           label="Senha: *"
           {...register('password', { required: true })}
           variant="outlined"
