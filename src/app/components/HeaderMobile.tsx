@@ -20,10 +20,14 @@ const RightContainer = styled(Box)(() => ({
 }))
 
 const HeaderMobile = () => {
+  const handleClick = () => {
+    alert('To be implemented')
+  }
+
   return (
     <Container>
       <LeftContainer>
-        <IconButton>
+        <IconButton onClick={handleClick}>
           <Image
             src={menu.src}
             alt="Menu Button"
@@ -33,7 +37,7 @@ const HeaderMobile = () => {
         </IconButton>
       </LeftContainer>
       <RightContainer>
-        <IconButton>
+        <IconButton onClick={handleClick}>
           <Image
             src={notifications.src}
             alt="Notifications Button"
@@ -41,7 +45,7 @@ const HeaderMobile = () => {
             width={40}
           />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={handleClick}>
           <Image
             src={avatar.src}
             alt="User Photo"

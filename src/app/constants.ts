@@ -4,26 +4,49 @@ import finance from './images/icons/finance.svg'
 import calendar from './images/icons/calendar.svg'
 
 export const itemsZIndex = {
-  background: 0,
+  background: -1,
   items: 1,
   loginItems: 1,
 }
 
-export const modules: { name: string; icon: any }[] = [
+export interface Module {
+  name: string
+  path: string
+  icon: any
+  options?: Module[]
+}
+
+export const modules: Module[] = [
   {
-    name: 'Students',
+    name: 'Alunos',
+    path: '/students',
     icon: student,
+    options: [
+      {
+        name: 'Cadastrar',
+        path: '/students/registration',
+        icon: student,
+      },
+      {
+        name: 'Ficha de Evolução',
+        path: '/students/evolution',
+        icon: student,
+      },
+    ],
   },
   {
-    name: 'Employees',
+    name: 'Funcionários',
+    path: '/employees',
     icon: employee,
   },
   {
-    name: 'Finance',
+    name: 'Financeiro',
+    path: '/finance',
     icon: finance,
   },
   {
-    name: 'Calendar',
+    name: 'Agenda',
+    path: '/calendar',
     icon: calendar,
   },
 ]
