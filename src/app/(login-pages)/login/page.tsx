@@ -10,7 +10,7 @@ import { useEffect, useMemo } from "react";
 import InputWarning from "@/app/components/InputWarning";
 import { useRouter } from "next/navigation";
 
-const Form = styled('form')(({ theme }) => ({
+const Form = styled('form')(() => ({
   display: 'flex',
   flexDirection: 'column',
   marginTop: 40,

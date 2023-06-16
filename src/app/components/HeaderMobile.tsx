@@ -1,9 +1,9 @@
 import { Box, IconButton, styled } from "@mui/material"
 import Image from "next/image"
 
-import menu from '../images/icons/hamburger.svg'
-import notifications from '../images/icons/bell.svg'
-import avatar from '../images/icons/login-empty-photo.svg'
+import menu from '../images/hamburger.svg'
+import notifications from '../images/bell.svg'
+import avatar from '../images/login-empty-photo.svg'
 
 const Container = styled(Box)(() => ({
   display: 'flex',

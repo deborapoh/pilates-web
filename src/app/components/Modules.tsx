@@ -44,7 +44,7 @@ const Modules = ({ modules, ...props }: Props) => {
 
   const handleModuleClick = (module: Module) => {
     // temporary
-    if (module.path === '/students') {
+    if (module.path === '/students' || module.path === '/students/registration') {
       router.push(module.path)
       return
     }

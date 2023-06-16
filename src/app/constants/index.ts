@@ -1,9 +1,9 @@
-import student from './images/icons/student.svg'
-import employee from './images/icons/employee.svg'
-import finance from './images/icons/finance.svg'
-import calendar from './images/icons/calendar.svg'
-import studentEvolution from './images/list.svg'
-import studentRegistration from './images/edit.svg'
+import student from '../images/student.svg'
+import employee from '../images/employee.svg'
+import finance from '../images/finance.svg'
+import calendar from '../images/calendar.svg'
+import studentEvolution from '../images/list.svg'
+import studentRegistration from '../images/edit.svg'
 
 export const itemsZIndex = {
   background: -1,
@@ -52,3 +52,12 @@ export const modules: Module[] = [
     icon: calendar,
   },
 ]
+
+export const formStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  marginTop: 40,
+  height: 225,
+  width: '100%',
+  justifyContent: 'space-between',
+}

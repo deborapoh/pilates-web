@@ -17,6 +17,9 @@ export const lightTheme = createTheme({
     secondary: {
       main: '#E2211C',
     },
+    error: {
+      main: '#ff0000'
+    },
     common: {
       white: '#FFFFFF',
       black: '#2E2E2E',

@@ -1,18 +1,24 @@
-import { Box, Typography, styled } from '@mui/material'
+import { Box, Typography, TypographyProps, styled } from '@mui/material'
 
 const Text = styled(Typography)(({ theme }) => ({
-  color: theme.palette.primary.main,
+  color: theme.palette.error.main,
   fontSize: 12,
-  marginBottom: 12,
   marginLeft: 24,
 }))
 
-const EmptyMessage = styled(Box)(() => ({
-  height: 40,
-}))
+interface Props extends TypographyProps {
+  message: string
+}
 
-const InputWarning = ({ message }: { message: string }) => (
-  message ? <Text role="alert">{message}</Text> : <EmptyMessage />
-)
+const InputWarning = ({ message, ...props }: Props) => {
+  const marginBottom = Number(props.marginBottom) >= 0 ? props.marginBottom : 12
+  const height = Number(props.height) >= 0 ? props.height : 40
+
+  return (
+    message ?
+      <Text role="alert" sx={{ marginBottom }}>{message}</Text> :
+      <Box sx={{ height }} />
+  )
+}
 
 export default InputWarning
