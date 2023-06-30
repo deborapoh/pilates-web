@@ -22,7 +22,9 @@ export type NameValues =
     name: NameValues
     label: string
     type: string
-    required: boolean
+    required?: boolean
+    disabled?: boolean
+    multiline?: boolean
     missingInfoError?: string
   }
 
@@ -56,107 +58,103 @@ export const studentFormValues: FormValues[] = [
     missingInfoError: 'Preencha o Nome',
   },
   {
+    name: 'email',
+    label: 'Email',
+    type: 'email',
+    required: true,
+    missingInfoError: 'Preencha o Email',
+  },
+  {
+    name: 'phoneNumber',
+    label: 'Telefone',
+    type: 'tel',
+    required: true,
+    missingInfoError: 'Preencha o Telefone',
+  },
+  {
     name: 'dateOfBirth',
     label: 'Data de Nascimento',
     type: 'date',
-    required: false,
+    required: true,
   },
   {
     name: 'age',
     label: 'Idade',
-    type: 'integer',
+    type: 'number',
     required: true,
+    disabled: true,
   },
   {
-    name: 'email',
-    label: 'Email',
-    type: 'text',
-    required: true,
-    missingInfoError: 'Preencha o Email',
+    name: 'hasDonePilates',
+    label: 'Já fez Pilates?',
+    type: 'select',
   },
   {
     name: 'address',
     label: 'Endereço',
     type: 'text',
-    required: false,
   },
   {
     name: 'neighborhood',
     label: 'Bairro',
     type: 'text',
-    required: false,
   },
   {
     name: 'state',
     label: 'UF',
     type: 'text',
-    required: false,
-  },
-  {
-    name: 'phoneNumber',
-    label: 'Telefone',
-    type: 'text',
-    required: true,
-    missingInfoError: 'Preencha o Telefone',
   },
   {
     name: 'jobTitle',
     label: 'Profissão',
     type: 'text',
-    required: false,
   },
   {
     name: 'pathologies',
-    label: 'Patologias/Comorbidades/Onde dói',
+    label: 'Onde dói/Patologias/Comorbidades',
     type: 'text',
-    required: false,
+    multiline: true,
   },
   {
     name: 'physicalActivities',
-    label: 'Pratica atividade física?',
+    label: 'Atividade física que pratica',
     type: 'text',
-    required: false,
-  },
-  {
-    name: 'hasDonePilates',
-    label: 'Já fez Pilates?',
-    type: 'checkbox',
-    required: false,
+    multiline: true,
   },
   {
     name: 'surgeries',
-    label: 'Já realizou cirurgia?',
+    label: 'Cirurgias',
     type: 'text',
-    required: false,
+    multiline: true,
   },
   {
     name: 'medications',
-    label: 'Faz uso de medicação contínua ou controlada?',
+    label: 'Medicação contínua/controlada',
     type: 'text',
-    required: false,
+    multiline: true,
   },
   {
     name: 'feelPainWhere',
-    label: 'Tem dor com frequência em alguma parte do corpo?',
+    label: 'Dor frequente no corpo?',
     type: 'text',
-    required: false,
+    multiline: true,
   },
   {
     name: 'howMetUs',
     label: 'Como conheceu nosso espaço?',
     type: 'text',
-    required: false,
+
   },
   {
     name: 'pilatesGoal',
     label: 'Objetivo com o pilates',
     type: 'text',
-    required: false,
+    multiline: true,
   },
   {
     name: 'physiotherapeuticDiagnosis',
     label: 'Diagnóstico Fisioterapêutico',
     type: 'text',
-    required: false,
+    multiline: true,
   },
 ]

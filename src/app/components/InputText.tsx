@@ -1,5 +1,5 @@
 import { TextField, TextFieldProps, styled } from "@mui/material"
-import { FunctionComponent } from "react"
+import { ForwardRefRenderFunction, FunctionComponent, forwardRef } from "react"
 
 const Input = styled(TextField)(({ theme }) => ({
   backgroundColor: theme.palette.common.white,
@@ -17,10 +17,11 @@ const Input = styled(TextField)(({ theme }) => ({
   "& fieldset": { border: 'none' },
 }))
 
-const InputText: FunctionComponent<TextFieldProps> = ({ ...props }) => {
-  return (
-    <Input {...props} />
-  )
-}
+const InputText: ForwardRefRenderFunction<
+  HTMLInputElement,
+  TextFieldProps
+> = ({ ...props }, ref) => {
+  return <Input {...props} ref={ref} />;
+};
 
-export default InputText
+export default forwardRef(InputText)

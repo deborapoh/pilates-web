@@ -16,8 +16,8 @@ const InputWarning = ({ message, ...props }: Props) => {
 
   return (
     message ?
-      <Text role="alert" sx={{ marginBottom }}>{message}</Text> :
-      <Box sx={{ height }} />
+      <Text ref={props.ref} role="alert" sx={{ marginBottom }}>{message}</Text> :
+      <Box ref={props.ref} sx={{ height }} />
   )
 }
 

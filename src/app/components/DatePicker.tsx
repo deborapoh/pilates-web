@@ -11,8 +11,9 @@ const PickerStyled = styled(DesktopDatePicker)(({ theme }) => ({
   zIndex: 1,
   backgroundColor: theme.palette.common.white,
   border: 'none',
-  marginBottom: 18,
+  // marginBottom: 18,
   color: theme.palette.primary.main,
+  width: '100%',
 
   '.MuiInputLabel-root': {
     fontSize: 18,
@@ -25,10 +26,10 @@ const PickerStyled = styled(DesktopDatePicker)(({ theme }) => ({
   "& fieldset": { border: 'none' },
 }))
 
-export default function DatePicker() {
+export default function DatePicker({ ...props }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <PickerStyled label="Data de Nascimento" />
+      <PickerStyled {...props} label={props.label} />
     </LocalizationProvider>
   );
 }

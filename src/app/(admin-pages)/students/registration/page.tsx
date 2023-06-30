@@ -5,9 +5,12 @@ import InputText from "@/app/components/InputText"
 import InputWarning from "@/app/components/InputWarning"
 import { FormData, FormValues, NameValues, studentFormValues } from "@/app/constants/student"
 import BackButton from "@/app/icons/BackButton"
-import { Box, Button, CircularProgress, Typography, styled } from "@mui/material"
-import { useMemo } from "react"
+import { Box, Button, Checkbox, CircularProgress, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Typography, styled } from "@mui/material"
+import { ChangeEvent, forwardRef, useMemo, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
+import { differenceInYears } from 'date-fns'
+import { formatPhone } from "@/app/utils/mask"
+import InputSelect from "@/app/components/InputSelect"
 
 const Form = styled('form')(() => ({
   display: 'flex',
@@ -31,10 +34,34 @@ const Title = styled(Typography)(({ theme }) => ({
 }))
 
 export default function StudentRegistration() {
+  const [age, setAge] = useState<number | ''>('')
+  const [phone, setPhone] = useState<string>('')
+  const [hasDonePilates, setHasDonePilates] = useState<string>('')
+
+  const handleChangeSelect = (event: SelectChangeEvent) => {
+    setHasDonePilates(event.target.value)
+  }
+
+  const handlePhoneChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+
+    // Remove all non-digit characters from the input
+    const digitsOnly = value.replace(/\D/g, '');
+
+    // Apply the telephone number mask
+    const maskedValue = formatPhone(digitsOnly);
+
+    setPhone(maskedValue);
+  }
+
   const defaultValues = useMemo(() => {
     let obj = {}
 
-    studentFormValues.forEach((v: FormValues) => obj = { ...obj, [v.name]: '' })
+    studentFormValues.forEach((v: FormValues) => {
+      const value = v.name === 'state' ? 'SC' : ''
+
+      return obj = { ...obj, [v.name]: value }
+    })
 
     return obj
   }, [])
@@ -52,6 +79,18 @@ export default function StudentRegistration() {
     defaultValues,
   })
 
+  const handleDateOfBirthChange = (birthDate: Date) => {
+    if (birthDate) {
+      const today = new Date()
+      const dateOfBirth = new Date(birthDate)
+      const calculatedAge = differenceInYears(today, dateOfBirth)
+      console.log('calculatedAge', calculatedAge)
+      setAge(calculatedAge)
+    } else {
+      setAge('');
+    }
+  };
+
   const onSubmit:SubmitHandler<FormData> = async (data) => {}
 
   return (
@@ -61,40 +100,113 @@ export default function StudentRegistration() {
         <Title>Cadastro de Alunos</Title>
       </TitleContainer>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        {studentFormValues.map((v: FormValues) => {
-          if (v.name === 'dateOfBirth') {
+        <Grid container style={{ columnGap: 12 }}>
+          {studentFormValues.map((v: FormValues) => {
+            let xs = (v.name === 'neighborhood') ? 9 : v.name === 'state' ? 2.5 : 12
+            xs = (v.name === 'age') ? 4 : v.name === 'hasDonePilates' ? 7.5 : xs
+
+            if (v.name === 'dateOfBirth') {
+              return (
+                <Grid key={v.name} item xs={xs}>
+                  <DatePicker
+                    label={`${v.label} ${v.required ? '*' : ''}`}
+                    onChange={(birthDate: Date) => handleDateOfBirthChange(birthDate)}
+                  />
+                  <InputWarning
+                    marginBottom={0}
+                    height={18}
+                    message={errors[v.name]?.type === 'required' && v.missingInfoError ? v.missingInfoError : ''}
+                  />
+                </Grid>
+              )
+            }
+
+            if (v.name === 'age') {
+              console.log('age', age)
+              return (
+                <Grid key={v.name} item xs={xs}>
+                  <InputText
+                    label={`${v.label} ${v.required ? '*' : ''}`}
+                    {...register(v.name, { required: v.required })}
+                    variant="outlined"
+                    disabled={v.disabled}
+                    value={age}
+                  />
+                  <InputWarning
+                    marginBottom={0}
+                    height={18}
+                    message={errors[v.name]?.type === 'required' && v.missingInfoError ? v.missingInfoError : ''}
+                  />
+                </Grid>
+              )
+            }
+
+            if (v.name === 'phoneNumber') {
+              return (
+                <Grid key={v.name} item xs={xs}>
+                  <InputText
+                    label={`${v.label} ${v.required ? '*' : ''}`}
+                    {...register(v.name, { required: v.required })}
+                    variant="outlined"
+                    onChange={handlePhoneChange}
+                    value={phone}
+                  />
+                  <InputWarning
+                    marginBottom={0}
+                    height={18}
+                    message={errors[v.name]?.type === 'required' && v.missingInfoError ? v.missingInfoError : ''}
+                  />
+                </Grid>
+              )
+            }
+
+            if (v.type === 'select') {
+              return (
+                <Grid key={v.name} item xs={xs}>
+                  <InputSelect
+                    key={v.name}
+                    label={v.label}
+                    value={hasDonePilates}
+                    onChange={handleChangeSelect}
+                    options={[
+                      {
+                        value: '',
+                        label: '',
+                      },
+                      {
+                        value: 'no',
+                        label: 'Não',
+                      },
+                      {
+                        value: 'yes',
+                        label: 'Sim',
+                      },
+                    ]}
+                  />
+                </Grid>
+              )
+            }
+
             return (
-              // <Box
-              //   key={v.name}
-              //   sx={{
-              //     width: '100%',
-              //     height: 60,
-              //     backgroundColor: 'white',
-              //     borderRadius: 1,
-              //     marginBottom: 2.25,
-              //   }}
-              // >
-                <DatePicker key={v.name} />
-              // </Box>
+              <Grid key={v.name} item xs={xs}>
+                <InputText
+                  label={`${v.label} ${v.required ? '*' : ''}`}
+                  {...register(v.name, { required: v.required })}
+                  variant="outlined"
+                  type={v.type}
+                  disabled={v.disabled}
+                  multiline={v.multiline}
+                  minRows={v.multiline ? 4 : 1}
+                />
+                <InputWarning
+                  marginBottom={0}
+                  height={18}
+                  message={errors[v.name]?.type === 'required' && v.missingInfoError ? v.missingInfoError : ''}
+                />
+              </Grid>
             )
-          }
-          return (
-            <Box key={v.name} width="100%">
-              <InputText
-                label={`${v.label} ${v.required ? '*' : ''}`}
-                {...register(v.name, { required: v.required })}
-                variant="outlined"
-              />
-              <InputWarning
-                marginBottom={0}
-                height={18}
-                message={errors[v.name]?.type === 'required' && v.missingInfoError ?
-                  v.missingInfoError :
-                  ''}
-              />
-            </Box>
-          )
-        })}
+          })}
+        </Grid>
 
         <Button onClick={() => clearErrors()} type="submit" variant="contained">
           {isSubmitting ? <CircularProgress /> : 'Salvar'}
