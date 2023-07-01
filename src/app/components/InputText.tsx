@@ -7,7 +7,7 @@ const Input = styled(TextField)(({ theme }) => ({
   width: '100%',
 
   '.MuiInputLabel-root': {
-    fontSize: 18,
+    fontSize: 14,
     color: theme.palette.primary.main,
     backgroundColor: theme.palette.common.white,
     paddingInline: 8,

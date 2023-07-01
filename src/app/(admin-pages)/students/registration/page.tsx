@@ -3,19 +3,20 @@
 import DatePicker from "@/app/components/DatePicker"
 import InputText from "@/app/components/InputText"
 import InputWarning from "@/app/components/InputWarning"
-import { FormData, FormValues, NameValues, studentFormValues } from "@/app/constants/student"
+import { FormData, FormValues, studentFormValues } from "@/app/constants/student"
 import BackButton from "@/app/icons/BackButton"
-import { Box, Button, Checkbox, CircularProgress, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Typography, styled } from "@mui/material"
-import { ChangeEvent, forwardRef, useMemo, useState } from "react"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { Box, CircularProgress, Grid, SelectChangeEvent, TextField, Typography, styled } from "@mui/material"
+import { ChangeEvent, useEffect, useMemo, useState } from "react"
+import { SubmitHandler, useForm, Controller } from "react-hook-form"
 import { differenceInYears } from 'date-fns'
 import { formatPhone } from "@/app/utils/mask"
 import InputSelect from "@/app/components/InputSelect"
+import ButtonDefault from "@/app/components/ButtonDefault"
 
 const Form = styled('form')(() => ({
   display: 'flex',
   flexDirection: 'column',
-  marginTop: 40,
+  marginBlock: 40,
   // height: 225,
   width: '100%',
   justifyContent: 'space-between',
@@ -34,7 +35,7 @@ const Title = styled(Typography)(({ theme }) => ({
 }))
 
 export default function StudentRegistration() {
-  const [age, setAge] = useState<number | ''>('')
+  const [age, setAge] = useState<string>('')
   const [phone, setPhone] = useState<string>('')
   const [hasDonePilates, setHasDonePilates] = useState<string>('')
 
@@ -67,12 +68,13 @@ export default function StudentRegistration() {
   }, [])
 
   const {
-    formState: { errors, isSubmitted, isSubmitting },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
     handleSubmit,
     register,
     clearErrors,
     setError,
-    reset
+    reset,
+    control,
   } = useForm<FormData>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
@@ -85,13 +87,25 @@ export default function StudentRegistration() {
       const dateOfBirth = new Date(birthDate)
       const calculatedAge = differenceInYears(today, dateOfBirth)
       console.log('calculatedAge', calculatedAge)
-      setAge(calculatedAge)
+      setAge(calculatedAge.toString())
     } else {
       setAge('');
     }
   };
 
-  const onSubmit:SubmitHandler<FormData> = async (data) => {}
+  const onSubmit:SubmitHandler<FormData> = async (data) => {
+    console.log('onSubmit', data)
+  }
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      console.log("Submitted")
+      // reset(defaultValues)
+      // setAge('')
+      // setPhone('')
+      // setHasDonePilates('')
+    }
+  }, [defaultValues, isSubmitSuccessful, reset])
 
   return (
     <main className="flex min-h-screen flex-col">
@@ -108,9 +122,19 @@ export default function StudentRegistration() {
             if (v.name === 'dateOfBirth') {
               return (
                 <Grid key={v.name} item xs={xs}>
-                  <DatePicker
-                    label={`${v.label} ${v.required ? '*' : ''}`}
-                    onChange={(birthDate: Date) => handleDateOfBirthChange(birthDate)}
+                  <Controller
+                    name={v.name}
+                    control={control}
+                    render={({ field }) => (
+                      <DatePicker
+                        value={field.value}
+                        label={`${v.label} ${v.required ? '*' : ''}`}
+                        onChange={(birthDate: Date) => {
+                          handleDateOfBirthChange(birthDate)
+                          field.onChange(birthDate)
+                        }}
+                      />
+                    )}
                   />
                   <InputWarning
                     marginBottom={0}
@@ -122,14 +146,15 @@ export default function StudentRegistration() {
             }
 
             if (v.name === 'age') {
-              console.log('age', age)
               return (
                 <Grid key={v.name} item xs={xs}>
                   <InputText
                     label={`${v.label} ${v.required ? '*' : ''}`}
                     {...register(v.name, { required: v.required })}
                     variant="outlined"
-                    disabled={v.disabled}
+                    InputProps={{
+                      readOnly: true,
+                    }}
                     value={age}
                   />
                   <InputWarning
@@ -194,7 +219,6 @@ export default function StudentRegistration() {
                   {...register(v.name, { required: v.required })}
                   variant="outlined"
                   type={v.type}
-                  disabled={v.disabled}
                   multiline={v.multiline}
                   minRows={v.multiline ? 4 : 1}
                 />
@@ -208,16 +232,9 @@ export default function StudentRegistration() {
           })}
         </Grid>
 
-        <Button onClick={() => clearErrors()} type="submit" variant="contained">
+        <ButtonDefault onClick={() => clearErrors()} type="submit" variant="contained">
           {isSubmitting ? <CircularProgress /> : 'Salvar'}
-        </Button>
-        {/* <Input
-          // InputProps={{ disableUnderline: true }}
-          label="Senha: *"
-          {...register('password', { required: true })}
-          variant="outlined"
-        /> */}
-        {/* <InputWarning message={errors.password?.type === 'required' ? 'Digite sua senha' : ''} /> */}
+        </ButtonDefault>
       </Form>
     </main>
   )

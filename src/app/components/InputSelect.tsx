@@ -3,7 +3,7 @@ import { FunctionComponent, forwardRef } from "react"
 
 const Label = styled(InputLabel)(({ theme }) => ({
   color: theme.palette.primary.main,
-  fontSize: 18,
+  fontSize: 14,
 }))
 
 const SelectStyled = styled(Select)(({ theme }) => ({
