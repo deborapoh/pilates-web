@@ -8,6 +8,8 @@ export const createUser = async (body: any) => {
         body,
       });
 
+      console.log('RESPONSE', response)
+
       if (!response.ok) {
           throw new Error('Network response was not ok');
       }
