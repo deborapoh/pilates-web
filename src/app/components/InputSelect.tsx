@@ -1,5 +1,4 @@
 import { Box, FormControl, InputLabel, MenuItem, Select, styled } from "@mui/material"
-import { FunctionComponent, forwardRef } from "react"
 
 const Label = styled(InputLabel)(({ theme }) => ({
   color: theme.palette.primary.main,
@@ -19,8 +18,13 @@ interface SelectProps {
   options: any
   value: any
 }
-
-const InputSelect = ({ gap = 18, label, onChange, options, value }: SelectProps) => {
+const InputSelect = ({
+  gap = 18,
+  label,
+  onChange,
+  options,
+  value
+}: SelectProps) => {
   return (
     <FormControl fullWidth>
       <Label id="has-done-pilates">{label}</Label>
@@ -40,4 +44,4 @@ const InputSelect = ({ gap = 18, label, onChange, options, value }: SelectProps)
   )
 };
 
-export default forwardRef(InputSelect)
+export default InputSelect;

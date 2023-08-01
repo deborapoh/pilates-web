@@ -1,6 +1,7 @@
 export type NameValues =
-  'name' |
-  'dateOfBirth' |
+  'firstName' |
+  'lastName' |
+  'birthDate' |
   'age' |
   'email' |
   'address' |
@@ -29,8 +30,9 @@ export type NameValues =
   }
 
 export interface FormData {
-  name: string
-  dateOfBirth: string
+  firstName: string
+  lastName: string
+  birthDate: string
   age: number | null
   email: string
   address?: string
@@ -51,8 +53,15 @@ export interface FormData {
 
 export const studentFormValues: FormValues[] = [
   {
-    name: 'name',
+    name: 'firstName',
     label: 'Nome',
+    type: 'text',
+    required: true,
+    missingInfoError: 'Preencha o Nome',
+  },
+  {
+    name: 'lastName',
+    label: 'Sobrenome',
     type: 'text',
     required: true,
     missingInfoError: 'Preencha o Nome',
@@ -72,7 +81,7 @@ export const studentFormValues: FormValues[] = [
     missingInfoError: 'Preencha o Telefone',
   },
   {
-    name: 'dateOfBirth',
+    name: 'birthDate',
     label: 'Data de Nascimento',
     type: 'date',
     required: true,
@@ -98,11 +107,11 @@ export const studentFormValues: FormValues[] = [
     label: 'Bairro',
     type: 'text',
   },
-  {
-    name: 'state',
-    label: 'UF',
-    type: 'text',
-  },
+  // {
+  //   name: 'state',
+  //   label: 'UF',
+  //   type: 'text',
+  // },
   {
     name: 'jobTitle',
     label: 'Profissão',

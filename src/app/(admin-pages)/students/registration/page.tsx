@@ -5,19 +5,19 @@ import InputText from "@/app/components/InputText"
 import InputWarning from "@/app/components/InputWarning"
 import { FormData, FormValues, studentFormValues } from "@/app/constants/student"
 import BackButton from "@/app/icons/BackButton"
-import { Box, CircularProgress, Grid, SelectChangeEvent, TextField, Typography, styled } from "@mui/material"
+import { Box, CircularProgress, Grid, SelectChangeEvent, Typography, styled } from "@mui/material"
 import { ChangeEvent, useEffect, useMemo, useState } from "react"
 import { SubmitHandler, useForm, Controller } from "react-hook-form"
 import { differenceInYears } from 'date-fns'
 import { formatPhone } from "@/app/utils/mask"
 import InputSelect from "@/app/components/InputSelect"
 import ButtonDefault from "@/app/components/ButtonDefault"
+import { createUser } from "@/app/api/users"
 
 const Form = styled('form')(() => ({
   display: 'flex',
   flexDirection: 'column',
   marginBlock: 40,
-  // height: 225,
   width: '100%',
   justifyContent: 'space-between',
 }))
@@ -39,17 +39,9 @@ export default function StudentRegistration() {
   const [phone, setPhone] = useState<string>('')
   const [hasDonePilates, setHasDonePilates] = useState<string>('')
 
-  const handleChangeSelect = (event: SelectChangeEvent) => {
-    setHasDonePilates(event.target.value)
-  }
-
   const handlePhoneChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-
-    // Remove all non-digit characters from the input
     const digitsOnly = value.replace(/\D/g, '');
-
-    // Apply the telephone number mask
     const maskedValue = formatPhone(digitsOnly);
 
     setPhone(maskedValue);
@@ -59,9 +51,8 @@ export default function StudentRegistration() {
     let obj = {}
 
     studentFormValues.forEach((v: FormValues) => {
-      const value = v.name === 'state' ? 'SC' : ''
-
-      return obj = { ...obj, [v.name]: value }
+      // const value = v.name === 'state' ? 'SC' : ''
+      return obj = { ...obj, [v.name]: '' }
     })
 
     return obj
@@ -94,16 +85,23 @@ export default function StudentRegistration() {
   };
 
   const onSubmit:SubmitHandler<FormData> = async (data) => {
-    console.log('onSubmit', data)
+    const dataToSave = {
+        ...data,
+        type: 'student',
+        age: Number(age),
+        hasDonePilates,
+        phoneNumber: phone,
+    }
+    await createUser(JSON.stringify(dataToSave));
   }
 
   useEffect(() => {
     if (isSubmitSuccessful) {
       console.log("Submitted")
-      // reset(defaultValues)
-      // setAge('')
-      // setPhone('')
-      // setHasDonePilates('')
+      reset(defaultValues)
+      setAge('')
+      setPhone('')
+      setHasDonePilates('')
     }
   }, [defaultValues, isSubmitSuccessful, reset])
 
@@ -116,10 +114,10 @@ export default function StudentRegistration() {
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Grid container style={{ columnGap: 12 }}>
           {studentFormValues.map((v: FormValues) => {
-            let xs = (v.name === 'neighborhood') ? 9 : v.name === 'state' ? 2.5 : 12
-            xs = (v.name === 'age') ? 4 : v.name === 'hasDonePilates' ? 7.5 : xs
+            let xs = (v.name === 'phoneNumber') ? 6 : v.name === 'birthDate' ? 5.7 : 12
+            xs = (v.name === 'age') ? 6 : v.name === 'hasDonePilates' ? 5.7 : xs
 
-            if (v.name === 'dateOfBirth') {
+            if (v.name === 'birthDate') {
               return (
                 <Grid key={v.name} item xs={xs}>
                   <Controller
@@ -192,7 +190,10 @@ export default function StudentRegistration() {
                     key={v.name}
                     label={v.label}
                     value={hasDonePilates}
-                    onChange={handleChangeSelect}
+                    onChange={(e: SelectChangeEvent) => {
+                      console.log('111', e.target.value)
+                      return setHasDonePilates(e.target.value)
+                    }}
                     options={[
                       {
                         value: '',
