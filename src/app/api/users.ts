@@ -1,7 +1,27 @@
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'
 
+export const createUser2 = async (body: any) => {
+  try {
+    console.log('BASE_URL', BASE_URL)
+
+    const response = await fetch(`${BASE_URL}/users/test`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body,
+      })
+
+      return await response.json();
+  } catch (error: any) {
+    console.error('Error while posting data:', error);
+  }
+}
+
 export const createUser = async (body: any) => {
   try {
+    console.log('BASE_URL', BASE_URL)
+
     const response = await fetch(`${BASE_URL}/users`, {
         method: 'POST',
         headers: {
