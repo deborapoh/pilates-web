@@ -5,7 +5,7 @@ export const createUser = async (body: any) => {
     const response = await fetch(`${BASE_URL}/users`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json', // Specify the content type as JSON
+          'Content-Type': 'application/json',
         },
         body,
       })
