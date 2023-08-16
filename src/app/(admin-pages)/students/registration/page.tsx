@@ -12,7 +12,7 @@ import { differenceInYears } from 'date-fns'
 import { formatPhone } from "@/app/utils/mask"
 import InputSelect from "@/app/components/InputSelect"
 import ButtonDefault from "@/app/components/ButtonDefault"
-import { createUser, createUser2 } from "@/app/api/users"
+import { createUser } from "@/app/api/users"
 
 const Form = styled('form')(() => ({
   display: 'flex',
@@ -92,7 +92,7 @@ export default function StudentRegistration() {
         hasDonePilates,
         phoneNumber: phone,
     }
-    await createUser2(JSON.stringify(dataToSave));
+    await createUser(JSON.stringify(dataToSave));
   }
 
   useEffect(() => {
