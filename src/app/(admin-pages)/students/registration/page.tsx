@@ -6,13 +6,15 @@ import InputWarning from "@/app/components/InputWarning"
 import { FormData, FormValues, studentFormValues } from "@/app/constants/student"
 import BackButton from "@/app/icons/BackButton"
 import { Box, CircularProgress, Grid, SelectChangeEvent, Typography, styled } from "@mui/material"
-import { ChangeEvent, useEffect, useMemo, useState } from "react"
+import { ChangeEvent, useContext, useEffect, useMemo, useState } from "react"
 import { SubmitHandler, useForm, Controller } from "react-hook-form"
 import { differenceInYears } from 'date-fns'
 import { formatPhone } from "@/app/utils/mask"
 import InputSelect from "@/app/components/InputSelect"
 import ButtonDefault from "@/app/components/ButtonDefault"
 import { createUser } from "@/app/api/users"
+import { useRouter } from "next/navigation"
+// import { useRouter } from "next/router"
 
 const Form = styled('form')(() => ({
   display: 'flex',
@@ -35,6 +37,9 @@ const Title = styled(Typography)(({ theme }) => ({
 }))
 
 export default function StudentRegistration() {
+  // const routerNav = useRouterNav()
+  const router = useRouter()
+  // const { id } = router.query
   const [age, setAge] = useState<string>('')
   const [phone, setPhone] = useState<string>('')
   const [hasDonePilates, setHasDonePilates] = useState<string>('')
@@ -51,7 +56,6 @@ export default function StudentRegistration() {
     let obj = {}
 
     studentFormValues.forEach((v: FormValues) => {
-      // const value = v.name === 'state' ? 'SC' : ''
       return obj = { ...obj, [v.name]: '' }
     })
 
@@ -77,7 +81,6 @@ export default function StudentRegistration() {
       const today = new Date()
       const dateOfBirth = new Date(birthDate)
       const calculatedAge = differenceInYears(today, dateOfBirth)
-      console.log('calculatedAge', calculatedAge)
       setAge(calculatedAge.toString())
     } else {
       setAge('');
@@ -92,18 +95,29 @@ export default function StudentRegistration() {
         hasDonePilates,
         phoneNumber: phone,
     }
-    await createUser(JSON.stringify(dataToSave));
+
+    try {
+      await createUser(JSON.stringify(dataToSave));
+      clearErrors()
+    } catch (error) {
+      if (error instanceof Error) {
+        setError("root.serverError", {
+          type: "400",
+          message: error.message
+        })
+      }
+    }
   }
 
   useEffect(() => {
-    if (isSubmitSuccessful) {
-      console.log("Submitted")
+    if (isSubmitSuccessful && Object.keys(errors).length === 0) {
       reset(defaultValues)
       setAge('')
       setPhone('')
       setHasDonePilates('')
+      router.push('/students')
     }
-  }, [defaultValues, isSubmitSuccessful, reset])
+  }, [defaultValues, isSubmitSuccessful, reset, errors, router])
 
   return (
     <main className="flex min-h-screen flex-col">
@@ -232,6 +246,8 @@ export default function StudentRegistration() {
             )
           })}
         </Grid>
+
+        <div>{errors?.root?.serverError.message ? errors?.root?.serverError.message : ''}</div>
 
         <ButtonDefault onClick={() => clearErrors()} type="submit" variant="contained">
           {isSubmitting ? <CircularProgress /> : 'Salvar'}

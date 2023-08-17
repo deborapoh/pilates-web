@@ -1,6 +1,10 @@
+import AppProvider from './context/provider';
+
 export default function App() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-    </main>
+    <AppProvider>
+      <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      </main>
+    </AppProvider>
   )
 }

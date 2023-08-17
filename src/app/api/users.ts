@@ -1,21 +1,19 @@
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'
 
 export const createUser = async (body: any) => {
-  try {
-    console.log('BASE_URL', BASE_URL)
+  const response = await fetch(`${BASE_URL}/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body,
+    })
 
-    const response = await fetch(`${BASE_URL}/users`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body,
-      })
-
-      return await response.json();
-  } catch (error: any) {
-    console.error('Error while posting data:', error);
+  if (!response.ok) {
+    throw new Error(`Error: ${await response.text()}`);
   }
+
+  return await response.json();
 }
 
 export const getUsers = async () => {
@@ -24,19 +22,17 @@ export const getUsers = async () => {
 }
 
 export const softDeleteUser = async (docId: string) => {
-  try {
-    const response = await fetch(`${BASE_URL}/users/${docId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          isActive: false,
-        })
-      });
+  const response = await fetch(`${BASE_URL}/users/${docId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        isActive: false,
+      })
+    });
 
-      return await response.json();
-  } catch (error: any) {
-    console.error('Error while deleting data:', error);
+  if (!response.ok) {
+    throw new Error(`Error: ${await response.text()}`);
   }
 }
